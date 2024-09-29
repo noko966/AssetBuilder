@@ -1,0 +1,1 @@
+('C:\\FE\\FONTS\\Sport Generator\\build\\project\\PYZ-00.pyz', [])
