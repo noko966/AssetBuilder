@@ -11,6 +11,7 @@ def downloadFont():
     SRC_FOLDER = "src"
     STARTER_FONT_FILE = "sportsIcons.ttf"
     # FONT_URL = "https://cdn-sp.totogaming.am/assets/fonts/sport-icons/sportsIcons.ttf"
+    # FONT_URL = "https://cdn-sp.kertn.net/assets/fonts/sport-ui-icons/400/sportsIcons.ttf"
     FONT_URL = "https://cdn-sp.kertn.net/assets/fonts/sport-ui-icons/100/sportsIcons.ttf"
     STARTER_FONT_FILE_PATH = os.path.join(SRC_FOLDER, STARTER_FONT_FILE)
     # Add versioning (optional)

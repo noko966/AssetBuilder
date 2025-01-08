@@ -26,6 +26,7 @@ CSS_CLASS = "dg_icon"
 ICON_SIZE = "24"
 name_mapping_json_path = os.path.join(SRC_FOLDER, "name_mapping.json")
 
+
 name_mapping = load_name_mapping(name_mapping_json_path)
 new_names_mapping = {}
 filesArray = []
@@ -70,11 +71,13 @@ def addToFont():
             glyph.importOutlines(os.path.join(TO_ADD_GLYPHS_PATH, file))
             scale_glyph(glyph)
             name = transform_name(os.path.splitext(file)[0])
+            print(name, 'nn')
             new_names_mapping[idx] = name
     else:
         custom_print("No existing glyphs were found in the specified range.")
+    update_name_mapping(new_names_mapping, name_mapping_json_path)
+    
 
-    # update_name_mapping(new_names_mapping, name_mapping_json_path)
         
 def replaceGlyphs():
     global FILES_TO_REPLACE
@@ -85,7 +88,6 @@ def replaceGlyphs():
             name = os.path.splitext(file)[0]
             try:
                 glyph_code = "uni" + format(int(name), "04X")
-                print(name, 'NAMEEEEEEEEEEEEEEEEEEEEEE')
                 
                 try:
                     # Try to get the glyph by glyph_code
@@ -121,8 +123,9 @@ def createHTMLCSS():
                     glyph.clear()
                     custom_print(f"Path does not exist for {code_point}")
                 else:
-                    name = name_mapping.get(str(code_point), code_point)
-                    print(f"name is {name} code_point is {code_point} glyph_code is {glyph_code}")
+                    name = load_name_mapping(name_mapping_json_path).get(str(code_point))
+                    
+                    # print(f"name is {name} code_point is {code_point} glyph_code is {glyph_code}")
                     
                     html_content += createCardHtml(transform_name(name), format(code_point, "04X"), CSS_CLASS)
                     css_content += f"""
@@ -168,7 +171,6 @@ def createHTMLCSS():
         css_file.write(css_content)
 
 # Save the updated name mapping
-# update_name_mapping(new_names_mapping, name_mapping_json_path)
 
 def saveNewFont():
     

@@ -85,7 +85,7 @@ def createCardHtml(name, code_point, add_class):
     """
 
 def transform_name(name):
-    print(f"tranfrormed name is {name}")
+    # print(f"tranfrormed name is {name}")
     st = str(name)
     # Make the entire name lowercase
     name = st.lower()
