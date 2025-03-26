@@ -10,21 +10,53 @@ import subprocess
 def downloadFont():
     SRC_FOLDER = "src"
     STARTER_FONT_FILE = "sportsIcons.ttf"
-    # FONT_URL = "https://cdn-sp.totogaming.am/assets/fonts/sport-icons/sportsIcons.ttf"
-    # FONT_URL = "https://cdn-sp.kertn.net/assets/fonts/sport-ui-icons/400/sportsIcons.ttf"
-    FONT_URL = "https://cdn-sp.kertn.net/assets/fonts/sport-ui-icons/100/sportsIcons.ttf"
-    STARTER_FONT_FILE_PATH = os.path.join(SRC_FOLDER, STARTER_FONT_FILE)
+    FONT_URL_400 = "https://cdn-sp.kertn.net/assets/fonts/sport-ui-icons/400/sportsIcons.ttf"
+    FONT_URL_100 = "https://cdn-sp.kertn.net/assets/fonts/sport-ui-icons/100/sportsIcons.ttf"
+    STARTER_FONT_400_FILE_PATH = os.path.join(SRC_FOLDER, "400", STARTER_FONT_FILE)
+    STARTER_FONT_100_FILE_PATH = os.path.join(SRC_FOLDER, "100", STARTER_FONT_FILE)
+
+    v = random.randint(1, 1000)
+    font_url_400_with_version = f"{FONT_URL_400}?v={v}"
+    font_url_100_with_version = f"{FONT_URL_100}?v={v}"
+
+    print(f"Downloading font from {font_url_400_with_version}")
+    print(f"Downloading font from {font_url_100_with_version}")
+
+    response_400 = requests.get(font_url_400_with_version)
+    response_100 = requests.get(font_url_100_with_version)
+
+    if response_400.status_code == 200:
+        with open(STARTER_FONT_400_FILE_PATH, 'wb') as font_file:
+            font_file.write(response_400.content)
+        print(f"Font downloaded and saved to {STARTER_FONT_400_FILE_PATH}")
+    else:
+        print(f"Failed to download the font. Status code: {response_400.status_code}")
+
+    if response_100.status_code == 200:
+        with open(STARTER_FONT_100_FILE_PATH, 'wb') as font_file:
+            font_file.write(response_100.content)  # ✅ fixed path
+        print(f"Font downloaded and saved to {STARTER_FONT_100_FILE_PATH}")
+    else:
+        print(f"Failed to download the font. Status code: {response_100.status_code}")
+
+
+
+def downloadCSS():
+    SRC_FOLDER = "src"
+    STARTER_CSS_FILE = "starterCSS.css"
+    FONT_URL = "https://cdn-sp.kertn.net/assets/fonts/sport-ui-icons/style.css"
+    STARTER_CSS_FILE_PATH = os.path.join(SRC_FOLDER, STARTER_CSS_FILE)
     # Add versioning (optional)
     v = random.randint(1, 1000)
-    font_url_with_version = f"{FONT_URL}?v={v}"
+    css_url_with_version = f"{FONT_URL}?v={v}"
 
     # Download the font every time
-    print(f"Downloading font from {font_url_with_version}")
-    response = requests.get(font_url_with_version)
+    print(f"Downloading font from {css_url_with_version}")
+    response = requests.get(css_url_with_version)
     if response.status_code == 200:
-        with open(STARTER_FONT_FILE_PATH, 'wb') as font_file:
-            font_file.write(response.content)
-        print(f"Font downloaded and saved to {STARTER_FONT_FILE_PATH}")
+        with open(STARTER_CSS_FILE_PATH, 'wb') as css_file:
+            css_file.write(response.content)
+        print(f"Font downloaded and saved to {STARTER_CSS_FILE_PATH}")
     else:
         print(f"Failed to download the font. Status code: {response.status_code}")
 
@@ -45,6 +77,7 @@ def call_ffpython(script_path, mode):
         raise FileNotFoundError(f"ffpython.exe not found at {ffpython_path}")
     
     downloadFont()
+    downloadCSS()
 
     def run_script():
         try:
@@ -64,7 +97,21 @@ def create_ui():
             for file_path in file_paths:
                 shutil.copy(file_path, os.path.join("src", "add"))
             print("Files added to src/add")
-            call_ffpython('main.py', 'add')  # Call with 'add' mode
+
+            apply_to_400 = messagebox.askyesno("Apply to 400?", "Do you want to add these glyphs to the 400 variant?")
+            apply_to_100 = messagebox.askyesno("Apply to 100?", "Do you want to add these glyphs to the 100 variant?")
+
+            if not apply_to_400 and not apply_to_100:
+                print("No variant selected. Aborting.")
+                return
+
+            # Write selected variants to a temporary config file
+            with open("variant_flags.txt", "w") as flag_file:
+                flag_file.write(f"400={str(apply_to_400)}\n")
+                flag_file.write(f"100={str(apply_to_100)}\n")
+
+            call_ffpython('main.py', 'add')
+
 
     def replace_files():
         clear_directory(os.path.join("src", "replace"))

@@ -28,18 +28,6 @@ def get_html_template():
         box-sizing: border-box;
       }
 
-      @font-face {
-            font-family: "digiSportIcons";
-            src: url("https://cdn-sp.totogaming.am/assets/fonts/sport-icons/sportsIcons.eot?v100");
-            src: url(".https://cdn-sp.totogaming.am/assets/fonts/sport-icons/sportsIcons.eot?#iefix&v100") format("embedded-opentype"),
-                url("https://cdn-sp.totogaming.am/assets/fonts/sport-icons/sportsIcons.woff2?v100") format("woff2"),
-                url("https://cdn-sp.totogaming.am/assets/fonts/sport-icons/sportsIcons.woff?v100") format("woff"),
-                url("https://cdn-sp.totogaming.am/assets/fonts/sport-icons/sportsIcons.ttf?v100") format("truetype");
-            font-weight: 900;
-            font-style: normal;
-            font-display: block;
-    }
-
       html,
       body {
         margin: 0;
