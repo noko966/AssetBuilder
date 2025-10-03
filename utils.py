@@ -61,10 +61,6 @@ def createCardHtml(name, code_point, add_class):
     <div class="card-client">
         <div class="icon_preview">
 
-            <div class="icon_old">
-                <i class="{add_class}_{name} ico_size-sm"></i>
-            </div>
-
             <div class="icon_main">
                 <i class="{add_class}_{name} copy_class_js ico_size-sm"></i>
             </div>

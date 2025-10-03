@@ -5,7 +5,7 @@ import webbrowser
 import random
 
 from utils import custom_print, load_name_mapping, update_name_mapping, scale_glyph, createCardHtml, transform_name
-from templates import get_html_template, get_css_template
+from templates import get_html_template
 
 printEnabled = True
 
@@ -129,7 +129,7 @@ def createHTMLCSS():
         print(f"Error: {css_file_path} not found.")
         return
     V = random.randint(1, 1000)
-    css_content += get_css_template(FONT_FILE_NAME, FONT_FAMILY_NAME, V)
+
     for code_point in range(0xE000, 0xE7B6):
         glyph_code = "uni" + format(code_point, "04X")
         if glyph_code in FONT:
@@ -140,6 +140,7 @@ def createHTMLCSS():
                     custom_print(f"Path does not exist for {code_point}")
                 else:
                     name = load_name_mapping(name_mapping_json_path).get(str(code_point))
+                    print(name)
                     html_content += createCardHtml(transform_name(name), format(code_point, "04X"), CSS_CLASS)
                     css_content += f"""
                     .{CSS_CLASS}_{transform_name(name)}::before {{
